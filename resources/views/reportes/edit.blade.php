@@ -1,4 +1,4 @@
-@extends('layout.update')
+@extends('layouts.update')
 
 @section('title', 'Editar Reporte')
 

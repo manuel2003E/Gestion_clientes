@@ -1,9 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Pago;
 use App\Models\Credito;
+use App\Models\Cliente; // Asegúrate de importar el modelo Cliente
 use Illuminate\Http\Request;
 
 class PagoController extends Controller
@@ -17,12 +17,14 @@ class PagoController extends Controller
     public function create()
     {
         $creditos = Credito::all();
-        return view('pagos.create', compact('creditos'));
+        $clientes = Cliente::all(); // Obtenemos los clientes
+        return view('pagos.create', compact('creditos', 'clientes')); // Pasamos los clientes a la vista
     }
 
     public function store(Request $request)
     {
         $request->validate([
+            'cliente_id' => 'required|exists:clientes,id', // Añadimos validación para cliente
             'credito_id' => 'required|exists:creditos,id',
             'monto_pagado' => 'required|numeric',
             'fecha_pago' => 'required|date',
@@ -35,12 +37,14 @@ class PagoController extends Controller
     public function edit(Pago $pago)
     {
         $creditos = Credito::all();
-        return view('pagos.edit', compact('pago', 'creditos'));
+        $clientes = Cliente::all(); // Obtenemos los clientes también en edit
+        return view('pagos.edit', compact('pago', 'creditos', 'clientes'));
     }
 
     public function update(Request $request, Pago $pago)
     {
         $request->validate([
+            'cliente_id' => 'required|exists:clientes,id', // Añadimos validación para cliente
             'credito_id' => 'required|exists:creditos,id',
             'monto_pagado' => 'required|numeric',
             'fecha_pago' => 'required|date',
@@ -56,4 +60,3 @@ class PagoController extends Controller
         return redirect()->route('pagos.index')->with('success', 'Pago eliminado con éxito.');
     }
 }
-

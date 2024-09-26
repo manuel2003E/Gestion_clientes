@@ -12,6 +12,10 @@ class ClienteController extends Controller
         $clientes = Cliente::all();
         return view('clientes.index', compact('clientes'));
     }
+    public function __construct()
+{
+$this->middleware('auth');
+}
 
     public function create()
     {

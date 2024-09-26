@@ -8,7 +8,7 @@ use App\Http\Controllers\PagoController;
 use App\Http\Controllers\ReporteController;
 
 // Ruta para la página de inicio
-Route::get('/', function () {
+Route::get('/home', function () {
     return view('home');
 });
 
@@ -72,4 +72,10 @@ Route::prefix('reportes')->group(function () {
     Route::put('/{id}', [ReporteController::class, 'update'])->name('reportes.update'); // Actualizar reporte
     Route::delete('/{id}', [ReporteController::class, 'destroy'])->name('reportes.destroy'); // Eliminar reporte
 });
+Route::get('/home', function () { return view('home');
+})->middleware('auth');
 
+
+Auth::routes();
+
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
